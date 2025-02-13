@@ -15,7 +15,7 @@ Well... here we are!
 ## Install
 
 ```
-
+go install github.com/bhrott/ccs@latest
 ```
 
 
