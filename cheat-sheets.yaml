@@ -1,0 +1,51 @@
+sheets:
+  - id: tmux
+    items:
+      - command: -- SESSIONS --
+        description: 
+      - command: new -s mysession
+        description: New Session
+      - command: tmux ls
+        description: List all sessions
+      - command: tmux a -t mysession
+        description: Attach to session
+      - command: ctrl+b s
+        description: View and switch sessions
+      - command: ctrl+b $
+        description: Rename session
+      - command: ctrl+b (
+        description: Previous session
+      - command: ctrl+b )
+        description: Next session
+      
+      - command: -- WINDOWS --
+        description:
+      - command: ctrl+b c
+        description: New window
+      - command: ctrl+b ,
+        description: Rename window
+      - command: ctrl+b w
+        description: List windows
+      - command: ctrl+b & 
+        description: Kill window
+      - command: ctrl+b p
+        description: Previous window
+      - command: ctrl+b n
+        description: Next window
+      - command: ctrl+b 0-9
+        description: Select window by number
+
+      - command: -- PANES --
+        description:
+      - command: ctrl+b %
+        description: Split the current pane with a vertical line to create a horizontal layout
+      - command: ctrl+b "
+        description: Split the current with a horizontal line to create a vertical layout
+      - command: ctrl+b z
+        description: Zoom in/out of pane
+      - command: ctrl+b x
+        description: Kill pane
+      - command: ctrl+b $arrow
+        description: Move between panes
+      
+        
