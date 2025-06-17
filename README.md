@@ -29,7 +29,7 @@ ccs my-sheet
 
 ```sh
 # Will list all your cheat-sheets
-ccs --ls
+ccs ls
 ```
 
 
