@@ -17,7 +17,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            "args": ["--ls"],
+            "args": ["tmux"],
             "env": {
                 "CHEAT_SHEETS_FILE_PATH": "./cheat-sheets.yaml"
             }

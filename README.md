@@ -68,12 +68,4 @@ ccs my-sheet
 
 It will output:
 
-```
-┌──────────────┬───────────────────────────────────────┐
-│ COMMAND      │ DESCRIPTION                           │
-├──────────────┼───────────────────────────────────────┤
-│ my-command   │ This is a description of my command   │
-├──────────────┼───────────────────────────────────────┤
-│ my-command-2 │ This is a description of my command-2 │
-└──────────────┴───────────────────────────────────────┘
-```
+![output](docs/output.png)

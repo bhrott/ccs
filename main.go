@@ -1,11 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/jedib0t/go-pretty/table"
+	"github.com/fatih/color"
 	"gopkg.in/yaml.v2"
 )
 
@@ -88,27 +89,27 @@ func createCheatSheetsFileIfNotExists() {
 }
 
 func handleListCommand(sheets Sheets) {
-	t := createDefaultTable()
-	t.AppendHeader(table.Row{"Cheat Sheet"})
-
 	for _, sheet := range sheets.Sheets {
-		t.AppendRow(table.Row{sheet.ID})
+		fmt.Println(sheet.ID)
 	}
-
-	t.Render()
 }
 
 func printCheatSheet(sheetCheets Sheets, sheetID string) {
-	t := createDefaultTable()
-	t.AppendHeader(table.Row{"Command", "Description"})
+	color.New(color.FgCyan, color.Bold).Println(sheetID)
 
 	found := false
+	commandColor := color.New(color.FgYellow, color.Italic)
+	separatorColor := color.New(color.Faint)
+	descriptionColor := color.New(color.FgWhite)
 
 	for _, sheet := range sheetCheets.Sheets {
 		if sheet.ID == sheetID {
 			found = true
 			for _, item := range sheet.Items {
-				t.AppendRow(table.Row{item.Command, item.Description})
+				commandColor.Print(item.Command)
+				separatorColor.Print(" | ")
+				descriptionColor.Print(item.Description)
+				fmt.Println()
 			}
 		}
 	}
@@ -116,17 +117,6 @@ func printCheatSheet(sheetCheets Sheets, sheetID string) {
 	if !found {
 		errorAndExit("Cheat sheet not found")
 	}
-
-	t.Render()
-}
-
-func createDefaultTable() table.Writer {
-	t := table.NewWriter()
-	t.SetOutputMirror(os.Stdout)
-	t.SetStyle(table.StyleLight)
-	t.Style().Options.SeparateRows = true
-
-	return t
 }
 
 func errorAndExit(message string) {
@@ -140,7 +130,7 @@ func main() {
 	sheetID := getSheetId()
 	sheetCheets := getCheatSheets()
 
-	if sheetID == "--ls" {
+	if sheetID == "ls" {
 		handleListCommand(sheetCheets)
 		os.Exit(0)
 	}
