@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Run checks
+        run: ./test.sh --cover
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.out
+          if-no-files-found: error
+
+  build:
+    name: build
+    needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # build.sh reads the version from git describe.
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Smoke test the binary
+        run: |
+          ./bin/ccs --version
+          CHEAT_SHEETS_FILE_PATH=./cheat-sheets.yaml ./bin/ccs ls
+          CHEAT_SHEETS_FILE_PATH=./cheat-sheets.yaml ./bin/ccs tmux panes
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ccs-${{ matrix.os }}
+          path: bin/ccs
+          if-no-files-found: error
