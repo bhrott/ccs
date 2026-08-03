@@ -1,0 +1,93 @@
+description: Terminal file manager (spf)
+
+groups:
+  - name: Navigation
+    items:
+      - command: j / k
+        description: Move down / up in the panel
+      - command: "l / enter"
+        description: Open file or enter directory
+      - command: "h / backspace"
+        description: Go to the parent directory
+      - command: pgdown / pgup
+        description: Move a page down / up
+      - command: "/"
+        description: Search in the current panel
+      - command: z
+        description: Jump to a directory with zoxide
+      - command: "P"
+        description: Open the pinned directories
+      - command: "."
+        description: Show/hide dot files
+      - command: "q"
+        description: Quit (Q quits and cd into the last dir)
+
+  - name: Panels
+    items:
+      - command: n
+        description: Create a new file panel
+      - command: "N"
+        description: Split the current file panel
+      - command: w
+        description: Close the current file panel
+      - command: tab
+        description: Next file panel (shift+left for the previous one)
+      - command: f
+        description: Toggle the file preview panel
+      - command: s
+        description: Focus on the sidebar
+      - command: m
+        description: Focus on the metadata panel
+      - command: p
+        description: Focus on the process bar
+      - command: "F"
+        description: Toggle the footer
+
+  - name: Files
+    items:
+      - command: ctrl+n
+        description: Create a new file or directory
+      - command: ctrl+r
+        description: Rename the selected item
+      - command: ctrl+c
+        description: Copy the selected items
+      - command: ctrl+x
+        description: Cut the selected items
+      - command: ctrl+v
+        description: Paste the items
+      - command: ctrl+d
+        description: Delete the selected items (to trash)
+      - command: "D"
+        description: Delete the selected items permanently
+      - command: ctrl+a
+        description: Compress the selected items
+      - command: ctrl+e
+        description: Extract the selected archive
+      - command: e
+        description: Open the file with your editor (E for the directory)
+      - command: ctrl+p
+        description: Copy the path of the selected item
+      - command: c
+        description: Copy the current working directory
+
+  - name: Selection
+    items:
+      - command: v
+        description: Toggle the select mode
+      - command: "J / K"
+        description: Select down / up in select mode
+      - command: "A"
+        description: Select all items in the panel
+
+  - name: Menus
+    items:
+      - command: "?"
+        description: Open the help menu
+      - command: ":"
+        description: Open the command line
+      - command: ">"
+        description: Open the spf prompt
+      - command: o
+        description: Open the sort options menu
+      - command: "R"
+        description: Toggle the reverse sort

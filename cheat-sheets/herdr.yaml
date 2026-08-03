@@ -1,0 +1,91 @@
+description: Terminal workspace manager for AI coding agents
+
+groups:
+  - name: CLI
+    items:
+      - command: herdr
+        description: Launch or attach to the persistent session
+      - command: herdr --session <name>
+        description: Use or create a named session
+      - command: herdr session attach <name>
+        description: Attach to a named session
+      - command: herdr --remote <ssh-target>
+        description: Attach through SSH to a remote server
+      - command: herdr status
+        description: Show the client and server status
+      - command: herdr update
+        description: Download and install the latest version
+      - command: herdr server stop
+        description: Stop the running server
+      - command: herdr server reload-config
+        description: Reload config.toml in the running server
+      - command: herdr channel set <stable|preview>
+        description: Choose the stable or preview update channel
+      - command: herdr --default-config
+        description: Print the default configuration
+      - command: herdr completion zsh
+        description: Generate the zsh completions
+
+  - name: Workspaces
+    items:
+      - command: ctrl+b w
+        description: Open the workspace picker
+      - command: ctrl+b g
+        description: Go to a workspace, tab or pane
+      - command: ctrl+b shift+n
+        description: New workspace
+      - command: ctrl+b shift+w
+        description: Rename the workspace
+      - command: ctrl+b shift+d
+        description: Close the workspace
+      - command: ctrl+b shift+g
+        description: New git worktree
+
+  - name: Tabs
+    items:
+      - command: ctrl+b c
+        description: New tab
+      - command: ctrl+b n
+        description: Next tab (p for the previous one)
+      - command: ctrl+b 1-9
+        description: Switch to the tab by number
+      - command: ctrl+b shift+t
+        description: Rename the tab
+      - command: ctrl+b shift+x
+        description: Close the tab
+
+  - name: Panes
+    items:
+      - command: ctrl+b v
+        description: Split the pane vertically
+      - command: "ctrl+b -"
+        description: Split the pane horizontally
+      - command: ctrl+b h/j/k/l
+        description: Focus the pane on that direction
+      - command: ctrl+b tab
+        description: Cycle to the next pane (shift+tab goes back)
+      - command: ctrl+b z
+        description: Zoom in/out of the pane
+      - command: ctrl+b r
+        description: Enter the resize mode
+      - command: ctrl+b x
+        description: Close the pane
+      - command: ctrl+b shift+p
+        description: Rename the pane
+      - command: ctrl+b e
+        description: Edit the scrollback
+
+  - name: Session
+    items:
+      - command: "ctrl+b ?"
+        description: Open the help
+      - command: ctrl+b s
+        description: Open the settings
+      - command: ctrl+b b
+        description: Toggle the sidebar
+      - command: ctrl+b o
+        description: Open the notification target
+      - command: ctrl+b shift+r
+        description: Reload the config
+      - command: ctrl+b q
+        description: Detach from the session

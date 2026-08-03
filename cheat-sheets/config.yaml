@@ -1,0 +1,8 @@
+# Settings shared by every cheat sheet. Colors are hex and paint the table.
+config:
+  colors:
+    title: "#5fd7ff"
+    group: "#2CEAA3"
+    command: "#ffd75f"
+    description: "#dadada"
+    border: "#5f5f5f"

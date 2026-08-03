@@ -1,0 +1,22 @@
+description: Commands of this cheat sheet tool
+
+groups:
+  - name: Basics
+    items:
+      - command: ccs ls
+        description: List all cheat sheets
+      - command: ccs <sheet>
+        description: Print a cheat sheet as a table
+      - command: ccs <sheet> <term>
+        description: Print only the items matching a term
+
+  - name: Config
+    items:
+      - command: ccs --path
+        description: Show which folder is being read
+      - command: ccs --plain
+        description: Render without table borders
+      - command: CHEAT_SHEETS_FILE_PATH=./my-sheets ccs ls
+        description: Read the sheets from another folder
+      - command: $EDITOR ~/.cheat-sheets/tmux.yaml
+        description: Edit one cheat sheet, one file per sheet

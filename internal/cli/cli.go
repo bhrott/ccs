@@ -27,14 +27,16 @@ Usage:
 Options:
   --plain              Render without table borders
   --no-color           Render without colors
-  --path               Print the cheat sheets file path and exit
+  --path               Print the cheat sheets path and exit
   -h, --help           Show this help
   -v, --version        Show the version
 
 Files:
-  The sheets are read from $CHEAT_SHEETS_FILE_PATH, or from
-  ~/.cheat-sheets/cheat-sheets.yaml when the variable is not set.
-  YAML and JSON are both supported.`
+  Every cheat sheet is one file inside $CHEAT_SHEETS_FILE_PATH, or inside
+  ~/.cheat-sheets when the variable is not set. The file name is the sheet
+  id (tmux.yaml -> "ccs tmux") and "config.yaml" holds the colors.
+  YAML and JSON are both supported, and the variable may also point to a
+  single file with every sheet inside.`
 
 type options struct {
 	plain   bool
@@ -74,7 +76,7 @@ func Run(args []string, stdout, stderr io.Writer) int {
 		return 0
 	}
 
-	if err := cheatsheet.EnsureFile(path); err != nil {
+	if err := cheatsheet.Ensure(path); err != nil {
 		fmt.Fprintln(stderr, err)
 		return 1
 	}
@@ -102,7 +104,7 @@ func Run(args []string, stdout, stderr io.Writer) int {
 
 	if isListCommand(opts.args[0]) {
 		if len(book.Sheets) == 0 {
-			fmt.Fprintf(stderr, "No cheat sheets registered yet. Add some to %s.\n", path)
+			fmt.Fprintf(stderr, "No cheat sheets registered yet. Create one like %s.\n", cheatsheet.SheetFilePath(path, "tmux"))
 			return 1
 		}
 
@@ -132,7 +134,7 @@ func printSheet(stdout, stderr io.Writer, book cheatsheet.Book, opts options, re
 		if term != "" {
 			fmt.Fprintf(stderr, "No items matching %q in cheat sheet %q.\n", term, sheet.ID)
 		} else {
-			fmt.Fprintf(stderr, "Cheat sheet %q has no items yet. Add some to %s.\n", sheet.ID, path)
+			fmt.Fprintf(stderr, "Cheat sheet %q has no items yet. Add some to %s.\n", sheet.ID, cheatsheet.SheetFilePath(path, sheet.ID))
 		}
 		return 1
 	}

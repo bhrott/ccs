@@ -52,8 +52,8 @@ jobs:
       - name: Smoke test the binary
         run: |
           ./bin/ccs --version
-          CHEAT_SHEETS_FILE_PATH=./cheat-sheets.yaml ./bin/ccs ls
-          CHEAT_SHEETS_FILE_PATH=./cheat-sheets.yaml ./bin/ccs tmux panes
+          CHEAT_SHEETS_FILE_PATH=./cheat-sheets ./bin/ccs ls
+          CHEAT_SHEETS_FILE_PATH=./cheat-sheets ./bin/ccs tmux panes
 
       - name: Upload binary
         uses: actions/upload-artifact@v4

@@ -87,4 +87,4 @@ else
 fi
 echo
 echo "Point it at your sheets with:"
-echo "  export CHEAT_SHEETS_FILE_PATH=$PROJECT_DIR/cheat-sheets.yaml"
+echo "  export CHEAT_SHEETS_FILE_PATH=$PROJECT_DIR/cheat-sheets"

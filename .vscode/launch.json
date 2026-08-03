@@ -19,7 +19,7 @@
             "program": "${fileDirname}",
             "args": ["tmux"],
             "env": {
-                "CHEAT_SHEETS_FILE_PATH": "./cheat-sheets.yaml"
+                "CHEAT_SHEETS_FILE_PATH": "./cheat-sheets"
             }
         }
     ]
