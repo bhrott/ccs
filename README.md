@@ -14,8 +14,15 @@ Well... here we are!
 
 ## Install
 
-```
+```sh
 go install github.com/bhrott/ccs@latest
+```
+
+`@latest` resolves to the newest released tag. To pin a version, or when the
+module proxy still serves an older one, ask for the tag directly:
+
+```sh
+go install github.com/bhrott/ccs@v0.1.0
 ```
 
 Or build it from a clone:
