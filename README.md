@@ -37,6 +37,9 @@ ccs tmux pane
 
 # List all your cheat sheets
 ccs ls
+
+# Download the default cheat sheets from github
+ccs reset
 ```
 
 Output:
@@ -69,6 +72,7 @@ Terminal multiplexer
 | `--plain` | Render without table borders, only aligned columns |
 | `--no-color` | Render without colors (`NO_COLOR` is respected too) |
 | `--path` | Print the cheat sheets path being used |
+| `-f`, `--force` | Used with `ccs reset`, overwrite without asking |
 | `-h`, `--help` | Show the help |
 | `-v`, `--version` | Show the version |
 
@@ -98,6 +102,24 @@ export CHEAT_SHEETS_FILE_PATH=~/dotfiles/cheat-sheets
 ```
 
 Run `ccs --path` to see which folder is being read.
+
+### Starting from the default cheat sheets
+
+`ccs reset` downloads the cheat sheets of
+[this folder](https://github.com/bhrott/ccs/tree/main/cheat-sheets) into your
+cheat sheets folder:
+
+```sh
+ccs reset            # lists what would be overwritten and asks before writing
+ccs reset --force    # overwrites without asking
+```
+
+It shallow clones the repo with your `git` into a temporary folder, copies the
+cheat sheets from there and removes the clone, so `git` has to be installed.
+
+Only the default files are overwritten (`config.yaml`, `tmux.yaml`, ...), your
+own sheets are kept. It needs a folder, so it does not work when
+`CHEAT_SHEETS_FILE_PATH` points at a single file.
 
 Every file can be YAML or JSON (`.yaml`, `.yml` or `.json`). This is
 `~/.cheat-sheets/tmux.yaml`:

@@ -20,3 +20,7 @@ groups:
         description: Read the sheets from another folder
       - command: $EDITOR ~/.cheat-sheets/tmux.yaml
         description: Edit one cheat sheet, one file per sheet
+      - command: ccs reset
+        description: Download the default cheat sheets from github
+      - command: ccs reset --force
+        description: Download the defaults without confirmation

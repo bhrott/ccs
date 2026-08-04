@@ -54,6 +54,8 @@ groups:
         description: Show which folder is being read
       - command: export CHEAT_SHEETS_FILE_PATH=./my-sheets
         description: Read the sheets from another folder
+      - command: ccs reset
+        description: Download the default cheat sheets from github
 `
 
 // ResolvePath returns the cheat sheets folder, from $CHEAT_SHEETS_FILE_PATH or

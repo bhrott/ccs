@@ -3,6 +3,7 @@
 package cli
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
@@ -14,6 +15,10 @@ import (
 	"github.com/bhrott/ccs/internal/render"
 )
 
+// stdin is where the confirmation of 'ccs reset' is read from. It is a var so
+// the tests can answer the prompt.
+var stdin io.Reader = os.Stdin
+
 // Version is the ccs version, overridable at build time with -ldflags.
 var Version = "dev"
 
@@ -23,11 +28,13 @@ Usage:
   ccs <sheet>          Print a cheat sheet as a table
   ccs <sheet> <term>   Print only the items matching a term
   ccs ls               List all cheat sheets
+  ccs reset            Download the default cheat sheets from github
 
 Options:
   --plain              Render without table borders
   --no-color           Render without colors
   --path               Print the cheat sheets path and exit
+  -f, --force          Reset without asking for confirmation
   -h, --help           Show this help
   -v, --version        Show the version
 
@@ -42,6 +49,7 @@ type options struct {
 	plain   bool
 	noColor bool
 	path    bool
+	force   bool
 	help    bool
 	version bool
 	args    []string
@@ -74,6 +82,12 @@ func Run(args []string, stdout, stderr io.Writer) int {
 	if opts.path {
 		fmt.Fprintln(stdout, path)
 		return 0
+	}
+
+	// Reset runs before loading: the folder may not exist yet, and a broken
+	// file is exactly what you want to overwrite.
+	if len(opts.args) > 0 && isResetCommand(opts.args[0]) {
+		return reset(stdout, stderr, path, opts)
 	}
 
 	if err := cheatsheet.Ensure(path); err != nil {
@@ -143,9 +157,77 @@ func printSheet(stdout, stderr io.Writer, book cheatsheet.Book, opts options, re
 	return 0
 }
 
+// reset replaces the cheat sheets of the folder with the default ones
+// published on the repo. Files that are not part of the defaults are kept, and
+// the ones that would be overwritten are listed before asking to continue.
+func reset(stdout, stderr io.Writer, path string, opts options) int {
+	if !cheatsheet.IsFolder(path) {
+		fmt.Fprintf(stderr, "Reset writes one file per cheat sheet, but %s is a single file.\n", path)
+		fmt.Fprintf(stderr, "Point %s at a folder to use it.\n", cheatsheet.FilePathEnv)
+		return 1
+	}
+
+	fmt.Fprintf(stdout, "Cloning the default cheat sheets from %s\n", cheatsheet.DefaultsURL)
+
+	files, err := cheatsheet.FetchDefaults()
+	if err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+
+	if existing := cheatsheet.ExistingDefaults(path, files); len(existing) > 0 && !opts.force {
+		fmt.Fprintf(stdout, "\nThis overwrites in %s:\n", path)
+		for _, name := range existing {
+			fmt.Fprintln(stdout, "  "+name)
+		}
+
+		if !confirm(stdout, "\nContinue? [y/N] ") {
+			fmt.Fprintln(stdout, "Nothing was changed.")
+			return 0
+		}
+	}
+
+	if err := cheatsheet.WriteDefaults(path, files); err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+
+	fmt.Fprintf(stdout, "\nWrote %d file(s) to %s:\n", len(files), path)
+	for _, file := range files {
+		fmt.Fprintln(stdout, "  "+file.Name)
+	}
+
+	return 0
+}
+
+func confirm(stdout io.Writer, prompt string) bool {
+	fmt.Fprint(stdout, prompt)
+
+	scanner := bufio.NewScanner(stdin)
+	if !scanner.Scan() {
+		return false
+	}
+
+	switch strings.ToLower(strings.TrimSpace(scanner.Text())) {
+	case "y", "yes":
+		return true
+	}
+
+	return false
+}
+
 func isListCommand(arg string) bool {
 	switch strings.ToLower(arg) {
 	case "ls", "list", "--ls", "--list", "-l":
+		return true
+	}
+
+	return false
+}
+
+func isResetCommand(arg string) bool {
+	switch strings.ToLower(arg) {
+	case "reset", "--reset":
 		return true
 	}
 
@@ -156,7 +238,7 @@ func parse(args []string) (options, error) {
 	opts := options{}
 
 	for _, arg := range args {
-		if !strings.HasPrefix(arg, "-") || isListCommand(arg) {
+		if !strings.HasPrefix(arg, "-") || isListCommand(arg) || isResetCommand(arg) {
 			opts.args = append(opts.args, arg)
 			continue
 		}
@@ -168,6 +250,8 @@ func parse(args []string) (options, error) {
 			opts.noColor = true
 		case "--path":
 			opts.path = true
+		case "-f", "--force":
+			opts.force = true
 		case "-h", "--help":
 			opts.help = true
 		case "-v", "--version":
