@@ -18,11 +18,12 @@ Well... here we are!
 go install github.com/bhrott/ccs@latest
 ```
 
-`@latest` resolves to the newest released tag. To pin a version, or when the
-module proxy still serves an older one, ask for the tag directly:
+`@latest` resolves to the newest released tag. To pin a version instead, ask for
+the tag directly, picking one from the
+[tags](https://github.com/bhrott/ccs/tags):
 
 ```sh
-go install github.com/bhrott/ccs@v0.1.0
+go install github.com/bhrott/ccs@v0.1.1
 ```
 
 Or build it from a clone:
