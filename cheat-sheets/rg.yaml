@@ -1,0 +1,105 @@
+description: Fast recursive search (ripgrep)
+
+groups:
+  - name: Basics
+    items:
+      - command: rg pattern
+        description: Search the pattern in the current directory, recursively
+      - command: rg pattern path/
+        description: Search only inside a path (file or directory)
+      - command: rg -i pattern
+        description: Case insensitive search
+      - command: rg -w pattern
+        description: Match only whole words
+      - command: rg -F 'a.b*c'
+        description: Search a literal string, no regex
+      - command: rg -n pattern
+        description: Show line numbers (already on when printing to a terminal)
+      - command: rg -v pattern
+        description: Show only the lines that do NOT match
+
+  - name: Filter files
+    items:
+      - command: rg -t go pattern
+        description: Search only in files of a type (go, js, py, md, ...)
+      - command: rg -T lock pattern
+        description: Skip the files of a type
+      - command: rg --type-list
+        description: List every known type and its globs
+      - command: rg -g '*.yaml' pattern
+        description: Search only in the files matching a glob
+      - command: rg -g '!vendor/*' pattern
+        description: Ignore the files matching a glob
+      - command: rg -u pattern
+        description: Also search ignored files (-uu adds hidden, -uuu adds binary)
+      - command: rg --hidden pattern
+        description: Include dot files and dot folders
+
+  - name: Context
+    items:
+      - command: rg -C 3 pattern
+        description: Show 3 lines around each match
+      - command: rg -A 3 pattern
+        description: Show 3 lines after each match
+      - command: rg -B 3 pattern
+        description: Show 3 lines before each match
+      - command: rg -l pattern
+        description: List only the files with a match
+      - command: rg --files-without-match pattern
+        description: List only the files without any match
+      - command: rg -c pattern
+        description: Count the matching lines per file
+      - command: rg -o pattern
+        description: Print only the matched part of the line
+
+  - name: Regex
+    items:
+      - command: rg 'foo|bar'
+        description: Match one alternative or the other
+      - command: rg -e -foo -e bar
+        description: Search many patterns, and patterns starting with a dash
+      - command: rg -U 'fn \w+\(\n'
+        description: Let the pattern match across lines
+      - command: rg -P '(?<=foo)bar'
+        description: Use the PCRE2 engine (lookaround, backreferences)
+      - command: rg -s Pattern
+        description: Force the case sensitive search
+      - command: rg -S pattern
+        description: Smart case, sensitive only when the pattern has uppercase
+
+  - name: Replace
+    items:
+      - command: rg pattern -r replacement
+        description: Print the matches with the replacement applied
+      - command: rg '(\w+)@(\w+)' -r '$2/$1'
+        description: Reuse the capture groups in the replacement
+      - command: rg --passthru pattern -r new
+        description: Print every line, replacing only the matches
+
+  - name: Files
+    items:
+      - command: rg --files
+        description: List the files ripgrep would search
+      - command: rg --files -g '*.md'
+        description: List the files matching a glob, without searching
+      - command: rg pattern --sort path
+        description: Sort the results by path (disables the parallelism)
+      - command: rg --json pattern
+        description: Print the results as json lines
+      - command: rg --stats pattern
+        description: Print a summary with matches, files and time
+
+  - name: Extras
+    items:
+      - command: rg -z pattern
+        description: Search inside compressed files (gz, bz2, xz, zst, ...)
+      - command: rg -a pattern
+        description: Search binary files as if they were text
+      - command: rg -m 5 pattern
+        description: Stop after 5 matches per file
+      - command: rg --max-depth 2 pattern
+        description: Limit how deep the directories are traversed
+      - command: rg --debug pattern
+        description: Explain why files are being skipped
+      - command: rg pattern --no-ignore
+        description: Ignore the .gitignore and friends
